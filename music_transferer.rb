@@ -1,5 +1,8 @@
 require 'httparty'
-API_KEY =
+API_KEY = "734ac794067e4044a137d274043c712b";
+
+# EXAMPLE:"https://api.spotify.com/v1/search?q=artist%3Asean%2Bpaul+like%2Bglue&type=track&limit=1"
+# artist:sean+paul like+glue
 
 def parseFileContents(content)
 end
@@ -9,7 +12,12 @@ def searchTrack(track)
   title = track.title;
   album = track.album;
 
-  trackResult = HTTParty.head("https://api.spotify.com/v1/search?q=artist:#{artist}album:#{album}name:#{title}&type=track&limit=1",{Authorization: "Bearer ${API_KEY}"});
+  res = HTTParty.head("https://api.spotify.com/v1/search?q=artist:#{artist}album:#{album}name:#{title}&type=track&limit=1",{Authorization: "Bearer #{API_KEY}"});
+
+  if (res.error || res.tracks.total == 0)
+    return false
+  else
+    trackID = res.tracks.items[0]
 end
 
 def saveTrack(trackID)
